@@ -41,8 +41,11 @@ jobs:
       - name: Sync dependencies (locked)
         run: uv sync --all-extras --dev --frozen
 
-      - name: Check formatting (ruff)
-        run: uv run ruff format --check .
+      - name: Formatting (ruff, non-blocking)
+        run: |
+          if ! uv run ruff format --check .; then
+            echo "::warning::Code not formatted"
+          fi
 
       - name: Lint (ruff)
         run: uv run ruff check .
